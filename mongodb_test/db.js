@@ -2,7 +2,7 @@ const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 const dbname = "testdb";
 //const url = "mongodb://localhost:27017";
-const url = "mongodb+srv://sethjray:DracosLordos*17@lorelinescluster-veurv.mongodb.net/test?retryWrites=true&w=majority";
+const url = "mongodb+srv://sethjray:Arouraios1@lorelinescluster-veurv.mongodb.net/test?retryWrites=true&w=majority";
 const mongoOptions = {useNewUrlParser : true};
 
 const state = {
