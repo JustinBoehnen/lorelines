@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
+//Defaults for user accounts
 var userSchema = new mongoose.Schema({
     Name: {
         type: String,
@@ -26,7 +28,7 @@ userSchema.path('Email').validate((val)=> {
 }, "Invalid Email.");
 
 
-//Events
+//Encrypt/Salt Password
 userSchema.pre('save', function(next){
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(this.Password, salt, (err, hash) => {
@@ -36,4 +38,18 @@ userSchema.pre('save', function(next){
         });
     });
 });
+
+//comparing encrpted and plain text password
+userSchema.methods.verifyPassword = function(Password) {
+    return bcrypt.compareSync(Password, this.Password);
+}
+
+userSchema.methods.generateJwt = function () {
+    return jwt.sign({ _id: this._id},
+        process.env.JWT_SECRET),
+    {
+        expiresIn: process.env.JWT_EXP
+    };
+}
+
 mongoose.model('UserAccounts', userSchema);
