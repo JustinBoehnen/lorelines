@@ -1,4 +1,4 @@
-var env = process.env.NODE_ENV || 'developement';
+var env = process.env.NODE_ENV || 'production';
 
 var config = require('./config.json');
 var envConfig = config[env];
