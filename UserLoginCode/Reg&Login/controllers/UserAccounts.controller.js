@@ -32,6 +32,7 @@ module.exports.authenticate = (req, res, next) => {
     //call for passport authentication
     passport.authenticate('local', (err, User, info) =>{
         // error from passport middleware
+        console.log('in authenticate function');
         if(err) 
             return res.status(400).json(err);
         else if (User)

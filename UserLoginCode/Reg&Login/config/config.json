@@ -7,7 +7,7 @@
     },
     "production" : {
         "PORT": 80,
-        "MONGODB_URI": "mogodb://xxxxx/DB_Name",
+        "MONGODB_URI": "SomeString",
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP" : "2m"
     }
