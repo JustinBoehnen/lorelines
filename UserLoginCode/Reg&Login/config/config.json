@@ -7,7 +7,7 @@
     },
     "production" : {
         "PORT": 80,
-        "MONGODB_URI": "mongodb+srv://sethjray:Arouraios1@lorelinescluster-veurv.mongodb.net/test",
+        "MONGODB_URI": "mongodb+srv://sethjray:Arouraios1@lorelinescluster-veurv.mongodb.net/lldb",
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP" : "2m"
     }
