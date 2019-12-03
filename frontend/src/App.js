@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import './App.css';
-import Navigation from './components/Navigation';
-import LoginForm from './components/LoginForm';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom'
+import './App.css'
+import Navigation from './components/Navigation'
+import LoginForm from './components/LoginForm'
+import Home from './components/Home'
+import PrivateRoute from './components/PrivateRoute'
+import axios from 'axios'
 
 const light = createMuiTheme({
   palette: {
     primary: { // accent: orange
       main: '#f78d1e',
       contrastText: '#fff',
+
     },
     drawer: {
       main: '#d9d9d9',
@@ -40,49 +44,29 @@ const dark = createMuiTheme({
   },
 })
 
-class App extends Component {
-  state = {
-    email: '',
-    password: '',
-    theme: 'light'
+export default function App() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [theme, setTheme] = useState('dark');
+
+  const tryLogin = (tryEmail, tryPassword) => {
+    setEmail(tryEmail);
+    setPassword(tryPassword);
+
+    axios.post('http://localhost:3000/api/user/auth', {
+      Email: { tryEmail },
+      Password: { tryPassword },
+    }).then(res => console.log(res.error)).catch(error => console.log(error))
   }
 
-  tryLogin = (email, password) => {
-    console.log("email:",email);
-    console.log("password:",password);
-  }
+  return (
+    <MuiThemeProvider theme={theme === 'dark' ? dark : light}>
+      <div className="App">
+      </div>
+      <Router>
 
-  render(){
-    return (
-      <MuiThemeProvider theme={this.state.theme === 'dark' ? dark : light}>
-        <div className="App">
-        </div>
-        <Router>
-          <Route path='/'>
-            <LoginForm tryLogin={this.tryLogin}/>
-          </Route>
-          <Route path='/account'>
-            <Navigation name='This is the name' />
-          </Route>
-          <Route path='/lorelines'>
-            <Navigation name='This is the name' />
-          </Route>
-          <Route path='/new'>
-            <Navigation name='This is the name' />
-          </Route>
-          <Route path='/timeline'>
-            <Navigation name='This is the name' />
-          </Route>
-          <Route path='/directory'>
-            <Navigation name='This is the name' />
-          </Route>
-          <Route path='/about'>
-            <Navigation name='This is the name' />
-          </Route>
-        </Router>
-      </MuiThemeProvider>
-    );
-  }
+        <Route path='/register' component={() => <h1>About</h1>} />
+      </Router>
+    </MuiThemeProvider >
+  );
 }
-
-export default App;

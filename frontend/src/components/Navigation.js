@@ -1,22 +1,37 @@
 import clsx from 'clsx';
-import React from 'react';
-import { BrowserRouter as Router, Link} from 'react-router-dom';
-import { 
-    Drawer, 
-    Divider, 
-    List, 
-    Typography, 
-    AppBar, 
-    Toolbar, 
-    CssBaseline, 
-    ListItem, 
-    makeStyles, 
-    ListItemIcon, 
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import {
+    Drawer,
+    Divider,
+    List,
+    AppBar,
+    Toolbar,
+    CssBaseline,
+    ListItem,
+    makeStyles,
+    ListItemIcon,
     ListItemText,
     IconButton,
+    Typography,
+    Button,
+    Switch,
+    Link as Mlink
 } from '@material-ui/core'
+import {
+    AccountCircle,
+    LibraryAdd,
+    Apps,
+    Timeline,
+    List as ListIcon,
+    Info,
+    Menu,
+    Close
+} from '@material-ui/icons'
+import { typography } from '@material-ui/system';
 
-const drawerWidth = 240;
+const drawerWidthExpanded = 240;
+const drawerWidthCondensed = 58;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,8 +45,8 @@ const useStyles = makeStyles(theme => ({
         }),
     },
     appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidthExpanded,
+        width: `calc(100% - ${drawerWidthExpanded}px)`,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
@@ -44,16 +59,16 @@ const useStyles = makeStyles(theme => ({
         display: 'none',
     },
     drawer: {
-        width: drawerWidth,
+        width: drawerWidthExpanded,
         flexShrink: 0,
         whiteSpace: 'nowrap',
     },
     drawerOpen: {
         overflowX: 'hidden',
-        width: drawerWidth,
+        width: drawerWidthExpanded,
         transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
         }),
     },
     drawerClose: {
@@ -61,10 +76,10 @@ const useStyles = makeStyles(theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-            overflowX: 'hidden',
-            width: 50, //theme.spacing(7) + 1,
-            [theme.breakpoints.up('sm')]: {
-            width: 65, //theme.spacing(9) + 1,
+        overflowX: 'hidden',
+        width: drawerWidthCondensed, //theme.spacing(7) + 1,
+        [theme.breakpoints.up('sm')]: {
+            width: drawerWidthCondensed, //theme.spacing(9) + 1,
         },
     },
     toolbar: {
@@ -78,13 +93,36 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    drawerIcons: {
-        fill: theme.palette.drawer.icons,
+    link: {
+        color: theme.palette.secondary.main,
+        textDecoration: 'underline',
+    },
+    logo: {
+        fill: '#fff',
+        height: 50,
+    },
+    orange: {
+        fill: theme.palette.primary.main,
+    },
+    logout: {
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+            boxShadow: '2px 2px 8px #444',
+        },
+        fontSize: 14,
+        marginLeft: 'auto',
+        marginRight: 0,
+    },
+    themetoggle: {
+        marginLeft: 'auto',
+        marginRight: -1000,
     },
 }));
 
 export default function Navigation(props) {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false)
+    const [email, setEmail] = useState('justinboehnen@gmail.com')
 
     const classes = useStyles();
 
@@ -94,12 +132,12 @@ export default function Navigation(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    
+
     return (
         <Router>
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: open,})}>
+                <AppBar position="fixed" className={clsx(classes.appBar, { [classes.appBarShift]: open, })}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -108,169 +146,121 @@ export default function Navigation(props) {
                             edge="start"
                             className={clsx(classes.menuButton, open && classes.hide)}
                         >
-                            <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.65 32.34" height={30}>
-                                <title>icon_hamburger</title><g id="Layer_2" data-name="Layer 2">
-                                    <g id="Layer_1-2" data-name="Layer 1">
-                                        <rect class="cls-1" y="25.18" width="35.65" height="7.16" rx="3.58"/>
-                                        <rect class="cls-1" y="12.59" width="35.65" height="7.16" rx="3.58"/>
-                                        <rect class="cls-1" width="35.65" height="7.16" rx="3.58"/>
-                                    </g>
-                                </g>
-                            </svg>
+                            <Menu color='#fff' />
                         </IconButton>
-                        <Typography variant="h6" noWrap>
-                            {props.name}
-                        </Typography>
+                        <svg className={classes.logo} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.17 41.17">
+                            <g id="Layer_2" data-name="Layer 2">
+                                <g id="Layer_1-2" data-name="Layer 1">
+                                    <circle class="cls-1" cx="20.58" cy="20.58" r="20.58" />
+                                    <path className={classes.orange} d="M16.76,13.22a.46.46,0,0,0,.74-.12l1.21-2.4a1.51,1.51,0,0,0-.91-2.11A1.55,1.55,0,0,0,16,9.43l-.86,1.71a.46.46,0,0,0,.09.54Z" />
+                                    <path className={classes.orange} d="M13.08,16.61a.47.47,0,0,0-.75.13L5.46,30.47a1.51,1.51,0,0,0,1.15,2.16,1.54,1.54,0,0,0,1.57-.87l6.53-13.07a.47.47,0,0,0-.09-.54Z" />
+                                    <path className={classes.orange} d="M34.56,8.53A1.55,1.55,0,0,0,33,9.41L26.46,22.48a.46.46,0,0,0,.09.53l1.54,1.54a.46.46,0,0,0,.75-.12L35.71,10.7A1.51,1.51,0,0,0,34.56,8.53Z" />
+                                    <path className={classes.orange} d="M24.41,28a.46.46,0,0,0-.75.12l-1.2,2.4a1.51,1.51,0,0,0,.91,2.11,1.55,1.55,0,0,0,1.81-.84L26,30a.46.46,0,0,0-.09-.54Z" />
+                                    <path className={classes.orange} d="M10.81,8.68a1.51,1.51,0,0,0-2.13,2.13L30.36,32.48a1.5,1.5,0,0,0,2.12-2.12Z" />
+                                </g>
+                            </g>
+                        </svg>
+                        <svg className={classes.logo} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168.56 43.24">
+                            <g id="Layer_2" data-name="Layer 2">
+                                <g id="Layer_1-2" data-name="Layer 1">
+                                    <path className="cls-1" d="M21.74,35.33c-6.19,0-11.95,4-15.55,4-.72,0-.92-.48-.92-1C5.27,27.81,21.54,4.2,31.73,4.2c1.28,0,1.8.52,1.8,1.35,0,3.28-8.11,11.31-13.31,11.31-.76,0-.92-.68-1.28-.68s-.36.84-.36,1.08c0,2.56,1.92,3.12,3.88,3.12,6.27,0,15.78-10.19,15.78-16.14C38.24,1.76,36.61,0,32.37,0,15.71,0,0,29.41,0,39c0,2.64,2.76,4.2,5.63,4.2,6.44,0,11.11-3,16.59-3a1.94,1.94,0,0,0,2-2A2.57,2.57,0,0,0,21.74,35.33Z" />
+                                    <path className="cls-1" d="M88.64,36.53c-1.12,0-1.6.52-2.6.52-1.68,0-2.32-1.6-2.32-4a25.51,25.51,0,0,1,.64-5.12C93.15,25.42,99,18.1,99,13.19c0-2.72-1.76-4.68-5.84-4.68-5.83,0-11.86,9.23-14.14,17.87l-1.68.24a.77.77,0,0,0-.38.1c-.62-.9-2.08-1.5-4.66-1.5a13.2,13.2,0,0,0-7.6,2.42,5.59,5.59,0,0,1-2.31.81c-2.83,0-.72-2.51-4.15-2.51s-7.48,5.11-8,5.11h0c-.08,0-.12-.08-.12-.2a12.1,12.1,0,0,0,.88-3.92c0-.91-.28-1.63-1.12-1.63C48,25.3,44,29.41,39.36,29.41h0a8.15,8.15,0,0,1-8,7.16c-1.36,0-1.76-.76-1.76-1.6,0-3.76,5.92-6,10.91-6.4.64-.2,1.32-1.75,1.32-2.87,0-.64-.2-1.12-.76-1.16s-.88,0-1.32,0c-8.35,0-15,6.87-15,11.63,0,2.55,1.92,4.47,6.43,4.47,5.44,0,11.19-3.39,11.51-7.59A5.54,5.54,0,0,0,46,30.53a1.21,1.21,0,0,1,.36,1c0,1.76-1.8,6.51-1.8,7.27,0,1,1.6,1.36,3.24,1.36,1.87,0,2-1.16,2.83-2.2,1-1.63,4.2-6.39,6-6.39.8,0,1.24.84,2.32.84a6.74,6.74,0,0,0,1.74-.26,7.57,7.57,0,0,0-.86,3.34c0,2.87,2.19,5.27,7.43,5.27,4.39,0,9.11-2,9.11-4.71,0-.6-.44-1-1.24-1-1.48,0-2.4,1.72-5.31,1.72-3.48,0-3.48-1-3.48-1,5.33-.66,10.1-4.33,10.84-7.15a2,2,0,0,0,.91.19h.32a21.72,21.72,0,0,0-.4,4.12c0,4.56,1.76,7.91,6.11,7.91,2.28,0,5.36-1.44,5.36-3.31C89.48,36.81,89.32,36.53,88.64,36.53ZM91.2,12.27c1,0,1.59,1,1.59,2.44,0,2.63-2,6.91-7.51,9.63C87.08,18.26,89.92,12.27,91.2,12.27ZM66,32.69c-.32,0-.4-.16-.4-.4,0-1.88,3.24-4,4.88-4,.56,0,1.11.12,1.11.6C71.61,30.33,68,32.69,66,32.69Z" />
+                                    <path className="cls-1" d="M101.23,35.05c-1.16,0-.92.84-2.48.84s-2.32-1.32-2.32-2.8c0-1.64,1.68-5.24,1.68-5.88a.75.75,0,0,0-.84-.71,13.7,13.7,0,0,0-4.12,1.11c-1.15,1.76-1.91,6.44-1.91,8.56,0,3.11,2.23,4.31,4.59,4.31,3.12,0,6.72-2.08,6.72-4.51A1.22,1.22,0,0,0,101.23,35.05Z" />
+                                    <path className="cls-1" d="M162.61,28.89a27.75,27.75,0,0,0-4,.32,5.25,5.25,0,0,0-5-3.95c-5.48,0-14.79,11.71-20.38,11.71-1.44,0-1.64-.64-1.64-1a.49.49,0,0,1,0-.2c5.79-.72,11-5,11-7.88,0-1.51-1.44-2.67-5-2.67-6.41,0-11.31,4.63-12.25,8.81-1,.29-3.2,1.58-4.69,1.58-1,0-1-.84-1-1.28,0-1.32.72-2.12.72-3.6s-1.36-1.92-2.76-1.92c-3,0-7.55,3.68-8.19,3.68a.33.33,0,0,1-.32-.36c0-.6.84-2.12.84-3.44,0-1.16-.68-2.15-3.16-2.15C101,26.54,101,30,101,30c0,.72.36,1.48,1.08,1.48s1.55-.64,2.47-.64a1.44,1.44,0,0,1,1.64,1.52c0,1.76-1.8,5-1.8,6.23,0,1,1.08,1.36,1.88,1.36a2.5,2.5,0,0,0,1.56-.56c.56-.48,5.4-5,6.24-5s.83.4.83,1c0,3,.12,4.47,2.6,4.47a13.56,13.56,0,0,0,7.86-3.05c.61,2.24,2.86,3.93,7.25,3.93,8.51,0,16.5-10.95,19.06-10.95a3.34,3.34,0,0,1,2,.56c-4.84,1.52-9,4-9,7.2,0,1.55,1.44,2.71,4.63,2.71,6.88,0,9.79-4.51,9.79-8.59v0c2.68.24,5.44,1.2,5.44,3.32,0,.4-.08.72-.08,1s.2.4.48.4c1.12,0,3.71-1.68,3.71-3.6S166.61,28.89,162.61,28.89Zm-31.69,3.4c0-1.88,3.24-4,4.87-4,.56,0,1.12.12,1.12.6,0,1.44-3.63,3.8-5.59,3.8C131,32.69,130.92,32.53,130.92,32.29Zm20.34,3.48c-.68,0-1-.36-1-.8,0-1.48,2-2.6,4.36-3.12a3.33,3.33,0,0,1,.12.88C154.78,34.25,153.66,35.77,151.26,35.77Z" />
+                                </g>
+                            </g>
+                        </svg>
+
+                        <Button className={classes.logout}>
+                            Log Out
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 <Drawer
                     variant="permanent"
                     className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                    })}
-                    classes={{
-                    paper: clsx({
                         [classes.drawerOpen]: open,
                         [classes.drawerClose]: !open,
-                    }),
+                    })}
+                    classes={{
+                        paper: clsx({
+                            [classes.drawerOpen]: open,
+                            [classes.drawerClose]: !open,
+                        }),
                     }}
                     open={open}
                 >
                     <div className={classes.toolbar}>
                         <IconButton onClick={handleDrawerClose}>
-                            <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.31 35.45" height={32}>
-                                <title>icon_chevron</title>
-                                <g id="Layer_2" data-name="Layer 2">
-                                    <g id="Layer_1-2" data-name="Layer 1">
-                                        <path class="cls-1" d="M8.65,17.73,20.26,6.11a3.58,3.58,0,1,0-5.07-5.06L1.05,15.19a3.59,3.59,0,0,0,0,5.07L15.19,34.4a3.59,3.59,0,0,0,5.07,0h0a3.57,3.57,0,0,0,0-5.06Z"/>
-                                    </g>
-                                </g>
-                            </svg>
+                            <Close color='secondary' />
                         </IconButton>
                     </div>
                     <Divider />
                     <List>
-                        <Link to='/account'>
+                        <Mlink className={classes.link} component={Link} to='/app/account'>
                             <ListItem button key="Account">
                                 <ListItemIcon>
-                                <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.65 35.21" width={30}>
-                                <title>icon_profile</title>
-                                <g id="Layer_2" data-name="Layer 2">
-                                    <g id="Layer_1-2" data-name="Layer 1">
-                                        <path class="cls-1" d="M13.64,17.38H22A13.64,13.64,0,0,1,35.65,31v0a4.18,4.18,0,0,1-4.18,4.18H4.18A4.18,4.18,0,0,1,0,31v0A13.64,13.64,0,0,1,13.64,17.38Z"/>
-                                        <circle class="cls-1" cx="17.82" cy="10.19" r="10.19"/>
-                                        </g>
-                                    </g>
-                                </svg>
+                                    <AccountCircle color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="Account" />
                             </ListItem>
-                        </Link>
-                        <Link to='/lorelines'>
+                        </Mlink>
+                        <Mlink className={classes.link} component={Link} to='/app/lorelines'>
                             <ListItem button key="Lorelines">
                                 <ListItemIcon>
-                                <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.91 25.76" width={30}>
-                                <title>icon_group</title>
-                                <g id="Layer_2" data-name="Layer 2">
-                                    <g id="Layer_1-2" data-name="Layer 1">
-                                        <rect class="cls-1" width="11.65" height="11.65" rx="4.18"/>
-                                        <rect class="cls-1" x="13.76" width="11.65" height="11.65" rx="4.18"/>
-                                        <rect class="cls-1" x="27.26" width="11.65" height="11.65" rx="4.18"/>
-                                        <rect class="cls-1" y="14.12" width="11.65" height="11.65" rx="4.18"/>
-                                        <rect class="cls-1" x="13.76" y="14.12" width="11.65" height="11.65" rx="4.18"/>
-                                        <rect class="cls-1" x="27.26" y="14.12" width="11.65" height="11.65" rx="4.18"/>
-                                        </g>
-                                    </g>
-                                </svg>
+                                    <Apps color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="Lorelines" />
                             </ListItem>
-                        </Link>
+                        </Mlink>
                     </List>
                     <Divider />
                     <List>
-                        <Link to='/new'>
+                        <Mlink className={classes.link} component={Link} to='/app/new'>
                             <ListItem button key="New Custom Entity">
                                 <ListItemIcon>
-                                    <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44.93 44.93" width={30}>
-                                        <title>icon_add</title>
-                                        <g id="Layer_2" data-name="Layer 2">
-                                            <g id="Layer_1-2" data-name="Layer 1">
-                                                <path class="cls-1" d="M41.37,18.9H29.58A3.56,3.56,0,0,1,26,15.35V3.56A3.56,3.56,0,0,0,22.46,0h0A3.56,3.56,0,0,0,18.9,3.56V15.35a3.55,3.55,0,0,1-3.55,3.55H3.56A3.56,3.56,0,0,0,0,22.46H0A3.56,3.56,0,0,0,3.56,26H15.35a3.56,3.56,0,0,1,3.55,3.56V41.37a3.57,3.57,0,0,0,3.56,3.56h0A3.56,3.56,0,0,0,26,41.37V29.58A3.57,3.57,0,0,1,29.58,26H41.37a3.56,3.56,0,0,0,3.56-3.56h0A3.57,3.57,0,0,0,41.37,18.9Z"/>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                    <LibraryAdd color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="New Custom Entity" />
                             </ListItem>
-                        </Link>
+                        </Mlink>
                     </List>
                     <Divider />
                     <List>
-                        <Link to='/timeline'>
+                        <Mlink className={classes.link} component={Link} to='/app/timeline'>
                             <ListItem button key="Timeline">
                                 <ListItemIcon>
-                                    <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.26 32.62" width={30}>
-                                        <title>icon_timeline</title>
-                                        <g id="Layer_2" data-name="Layer 2">
-                                            <g id="Layer_1-2" data-name="Layer 1">
-                                                <rect class="cls-1" y="10.49" width="11.65" height="11.65" rx="4.18"/>
-                                                <rect class="cls-1" x="23.62" width="11.65" height="11.65" rx="4.18"/>
-                                                <rect class="cls-1" x="23.62" y="20.97" width="11.65" height="11.65" rx="4.18"/>
-                                                <path class="cls-1" d="M19.38,16.31v-8a1,1,0,0,1,1-1h.81a1,1,0,0,0,1-1v-1a1,1,0,0,0-1-1H19.4a3,3,0,0,0-3,3V13.8a1,1,0,0,1-1,1H14a1,1,0,0,0-1,1v1a1,1,0,0,0,1,1h1.42a1,1,0,0,1,1,1v6.46a3,3,0,0,0,3,3h1.8a1,1,0,0,0,1-1v-1a1,1,0,0,0-1-1h-.81a1,1,0,0,1-1-1v-8Z"/>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                    <Timeline color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="Timeline" />
                             </ListItem>
-                        </Link>
-                        <Link to='/directory'>
+                        </Mlink>
+                        <Mlink className={classes.link} component={Link} to='/app/directory'>
                             <ListItem button key="Directory">
                                 <ListItemIcon>
-                                    <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.44 36.94" width={30}>
-                                        <title>icon_directory</title>
-                                        <g id="Layer_2" data-name="Layer 2">
-                                            <g id="Layer_1-2" data-name="Layer 1">
-                                                <rect class="cls-1" width="11.65" height="11.65" rx="4.18"/>
-                                                <rect class="cls-1" x="17.79" y="12.65" width="11.65" height="11.65" rx="4.18"/>
-                                                <path class="cls-1" d="M15.78,20H7.62a3.3,3.3,0,0,1-3.3-3.3V13.62a.69.69,0,0,1,.7-.69H6.63a.69.69,0,0,1,.69.69v2.46a.9.9,0,0,0,.9.89h7.56a.69.69,0,0,1,.69.7v1.61A.69.69,0,0,1,15.78,20Z"/>
-                                                <rect class="cls-1" x="17.79" y="25.29" width="11.65" height="11.65" rx="4.18"/>
-                                                <path class="cls-1" d="M15.78,32.62H7.62a3.3,3.3,0,0,1-3.3-3.3V21.94a.69.69,0,0,1,.7-.69H6.63a.69.69,0,0,1,.69.69v6.78a.9.9,0,0,0,.9.9h7.56a.69.69,0,0,1,.69.69v1.61A.69.69,0,0,1,15.78,32.62Z"/>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                    <ListIcon color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="Directory" />
                             </ListItem>
-                        </Link>
+                        </Mlink>
                     </List>
                     <Divider />
                     <List>
-                        <Link to='/about'>
+                        <Mlink className={classes.link} component={Link} to='/app/about'>
                             <ListItem button key="About Lorelines">
                                 <ListItemIcon>
-                                    <svg className={classes.drawerIcons} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.01 33.45" height={35}>
-                                        <title>icon_question</title>
-                                        <g id="Layer_2" data-name="Layer 2">
-                                            <g id="Layer_1-2" data-name="Layer 1">
-                                                <circle class="cls-1" cx="9.51" cy="29.48" r="3.97"/>
-                                                <path class="cls-1" d="M9.85,0A9.55,9.55,0,0,0,0,8.23,1.18,1.18,0,0,0,1.19,9.55H4.1a1.17,1.17,0,0,0,1.15-.91,4.31,4.31,0,1,1,4.22,5.22h0a2.57,2.57,0,0,0-2.59,2.57v5.39h0A1.19,1.19,0,0,0,8,23h2.85a1.19,1.19,0,0,0,1.19-1.19v-1.7a2,2,0,0,1,1.26-1.86A9.54,9.54,0,0,0,9.85,0Z"/>
-                                            </g>
-                                        </g>
-                                    </svg>
+                                    <Info color='secondary' />
                                 </ListItemIcon>
                                 <ListItemText primary="About Lorelines" />
                             </ListItem>
-                        </Link>
+                        </Mlink>
                     </List>
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                
-                    
-        
+
+
+
                 </main>
             </div>
 
