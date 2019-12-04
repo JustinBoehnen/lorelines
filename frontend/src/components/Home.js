@@ -1,39 +1,42 @@
-/** @format */
+import React, { useState } from 'react'
+import { Route } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core'
 
-import React, { useState } from 'react';
-import Navigation from './Navigation';
-import { Route, withRouter } from 'react-router-dom';
-import { Box, makeStyles, CssBaseline } from '@material-ui/core';
+import Topbar from './Topbar'
+import Sidebar from './Sidebar'
 
-import Account from './Account';
-import { Router } from '@material-ui/icons';
+import Account from './Account'
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
+  },
+  box: {
+    width: '100px',
+    height: '100px',
+    borderStyle: 'solid',
+    borderWidth: '2px 2px 2px 2px',
+    backgroundColor: 'red'
   }
-}));
+}))
 
-export default function Home() {
-  //const [drawerOpen, setDrawerOpen] = useState(false);
+export default function Home(props) {
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const setDrawer = isOpen => {
-    //setDrawerOpen(isOpen);
-  };
+  const classes = useStyles()
 
   return (
     <div>
-      <CssBaseline />
-      <Navigation setDrawer={setDrawer} />
-      <Box marginLeft="70px" marginTop="100px"></Box>
-      <Route path="/app/account">
-        <Account />
-      </Route>
-      <Route path="/app/lorelines" component={Account} />
-      <Route path="/app/new" component={() => <h1>New Custom Entity</h1>} />
-      <Route path="/app/timeline" component={() => <h1>Timeline</h1>} />
-      <Route path="/app/directory" component={() => <h1>Directory</h1>} />
-      <Route path="/app/about" component={() => <h1>About</h1>} />
+      <Topbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+      <div className={classes.root}>
+        <Sidebar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+        <Route path='/app/account' component={Account} />
+        <Route path='/app/lorelines' render={() => <h1>Lorelines</h1>} />
+        <Route path='/app/new' render={() => <div className={classes.box} />} />
+        <Route path='/app/timeline' render={() => <h1>Timeline</h1>} />
+        <Route path='/app/directory' render={() => <h1>Directory</h1>} />
+        <Route path='/app/about' render={() => <h1>About</h1>} />
+      </div>
     </div>
-  );
+  )
 }

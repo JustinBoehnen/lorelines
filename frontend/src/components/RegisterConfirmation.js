@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { makeStyles, Grid, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -17,14 +18,21 @@ export default function RegisterForm() {
   return (
     <main className={classes.root}>
       <Grid
-        style={{ height: '70vh', width: '70vw', textAlign: 'center' }}
+        style={{ height: '100vh', textAlign: 'center' }}
         direction='column'
         justify='center'
         alignItems='center'
         container
       >
         <Grid item>
-          <Typography>This is the Account page yo</Typography>
+          <Typography>Thank you for creating a Lorelines account</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>
+            <Link className={classes.link} to='/'>
+              return to login
+            </Link>
+          </Typography>
         </Grid>
       </Grid>
     </main>

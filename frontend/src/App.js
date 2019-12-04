@@ -1,27 +1,21 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   createMuiTheme,
   MuiThemeProvider,
   CssBaseline,
-  makeStyles,
-  Grid
-} from '@material-ui/core';
-import axios from 'axios';
-import {
-  BrowserRouter as Router,
-  Route,
-  withRouter,
-  Redirect,
-  Switch
-} from 'react-router-dom';
-import './App.css';
-import Navigation from './components/Navigation';
-import LoginForm from './components/LoginForm';
-import Home from './components/Home';
-import RegisterUser from './components/RegisterUser';
-import Account from './components/Account';
+  makeStyles
+} from '@material-ui/core'
+import axios from 'axios'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import './App.css'
+
+import LoginForm from './components/LoginForm'
+import Home from './components/Home'
+import RegisterForm from './components/RegisterForm'
+import RegisterConfirmation from './components/RegisterConfirmation'
+import ForgotPassword from './components/ForgotPassword'
 
 const light = createMuiTheme({
   palette: {
@@ -40,7 +34,7 @@ const light = createMuiTheme({
       main: '#000'
     }
   }
-});
+})
 
 const dark = createMuiTheme({
   palette: {
@@ -60,7 +54,7 @@ const dark = createMuiTheme({
     },
     type: 'dark'
   }
-});
+})
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,17 +66,22 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   }
-}));
+}))
 
 export default function App() {
-  const [email, setEmail] = useState('');
-  const [auth, setAuth] = useState(false);
-  const [theme, setTheme] = useState('dark');
+  const [email, setEmail] = useState('')
+  const [auth, setAuth] = useState(false)
+  const [theme, setTheme] = useState('dark')
 
-  const classes = useStyles();
+  const classes = useStyles()
+  const payload = {
+    email,
+    setTheme
+  }
 
   const tryLogin = (tryEmail, tryPassword) => {
-    setEmail(tryEmail);
+    setAuth(true)
+    setEmail(tryEmail)
 
     axios
       .post('http://localhost:3000/api/user/auth', {
@@ -90,8 +89,8 @@ export default function App() {
         Password: { tryPassword }
       })
       .then(res => console.log(res.error))
-      .catch(error => console.log(error));
-  };
+      .catch(error => console.log(error))
+  }
 
   return (
     <MuiThemeProvider theme={theme === 'dark' ? dark : light}>
@@ -104,26 +103,21 @@ export default function App() {
             }}
           />
 
-          <Route exact path="/">
-            <Grid
-              container
-              direction="column-reverse"
-              justify="center"
-              alignItems="center"
-            >
-              <LoginForm className={classes.center} tryLogin={tryLogin} />
-            </Grid>
+          <Route exact path='/'>
+            <LoginForm className={classes.center} tryLogin={tryLogin} />
           </Route>
 
-          <Route exact path="/app">
-            <Home />
-          </Route>
+          <Route path='/forgot' component={ForgotPassword} />
 
-          <Route path="/register" component={RegisterUser} />
+          <Route path='/app'>
+            <Home props={payload} />
+          </Route>
+          <Route exact path='/register' component={RegisterForm} />
+          <Route path='/register/confirm' component={RegisterConfirmation} />
         </div>
       </Router>
     </MuiThemeProvider>
-  );
+  )
 }
 
 /*
